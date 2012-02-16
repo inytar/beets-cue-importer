@@ -1,0 +1,35 @@
+Cue-importer:
+On loading check if the cue-path field exists in library, else make it 
+
+in config: cue-save-folder <- if not given save to album folder
+
+user gives files or folder to import
+cue-importer makes list of all cue files in folders (recursive) / files
+for each file
+    read cue file
+        album name
+        total tracks (with WAVE or MP3)
+    Read Beets library
+        find (album_)items with same totaltracks without cue-path
+            Beets can determine the total seconds loaded, this could be used to determine the correct cue
+        compare album name -> calc percentage (can Beets do this or is this a Musicbrainz thing?)
+            if not doable with Beets, use libMusicBrainz??
+    if percentage > 90% = copy
+    if percentage < 90% = show options, let user choose
+    if none = 
+        library search of totaltracks with cue-path
+        if found error with cue-path
+        if again none
+            give a error
+    copy
+        if cue-save-folder = FALSE
+            read beets library item path of album (might need some magik ;)
+        if cue-save-folder = TRUE
+            determine difference album path and cue save path
+        load cue to temp file
+        for every line with WAVE of MP3
+            determine track number (is easy by determine in wich for your in)
+            read beets library item with album and track
+            replace line with new file name relative to save destination new cue
+        save new cue in correct folder
+        add cue-path to beets library
